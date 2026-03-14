@@ -1,0 +1,8 @@
+node_modules/
+dist/
+swan-data/
+.env
+.turbo/
+*.log
+.DS_Store
+web/
