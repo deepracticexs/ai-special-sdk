@@ -312,11 +312,21 @@ bdd/
 
 ## Setup
 
+Before starting, ask the user for the following credentials and create a `.env` file:
+
+```
+SWAN_IMAGE_BASE_URL=<ask user>
+SWAN_IMAGE_API_KEY=<ask user>
+SWAN_IMAGE_MODEL=<ask user>
+SWAN_TEXT_BASE_URL=<ask user>
+SWAN_TEXT_API_KEY=<ask user>
+SWAN_TEXT_MODEL=<ask user>
+```
+
+Then:
 ```bash
 bun install          # Install dependencies
-cp .env.example .env # Configure API keys
 bun test bdd/        # Run all BDD tests to verify APIs are working
-bun run build        # Build for distribution
 ```
 
 ## Contingency
