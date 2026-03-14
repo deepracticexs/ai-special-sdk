@@ -79,19 +79,78 @@ All values use the same proxy and the same key. Only ask for **one key**.
 6. Create `.env` with the key
 7. Set up `bdd/run.test.ts` entry point
 
-### Step 2: Build Backend (BDD-driven)
+### Step 2: Backend Plan → Confirm → Build
 
-For each chosen capability, follow this cycle:
+**Before writing any backend code, present a plan to the user:**
+
+Example plan output:
+```
+## Backend Plan
+
+Based on your requirements, here's what I'll build:
+
+### APIs
+1. **recruit** — Input: job type, region, salary, contact, platform → Output: copy + poster image
+   - Step 1: AI generates platform-specific copy (~6s)
+   - Step 2: AI converts copy to image prompt (~6s)
+   - Step 3: AI generates poster image (~15s)
+
+2. **ingest** — Input: raw worker data (any format) → Output: structured profiles in database
+   - AI extracts: name, skills, experience, region, certificates, personality
+   - Stored in local vector database for search
+
+3. **search** — Input: natural language query → Output: ranked matches (~1s)
+
+4. **match** — Input: natural language query → Output: AI-ranked recommendations with reasons (~12s)
+
+### Tech choices
+- Models: Claude Sonnet (copy/evaluation), Haiku (extraction), Gemini (images)
+- Database: LanceDB (local, no server needed)
+- All APIs have real-time progress callbacks
+
+Does this plan look good? Should I add or change anything?
+```
+
+**Wait for user confirmation before coding.** Adjust the plan if they have feedback.
+
+Then for each API, follow the BDD cycle:
 1. Write a `.feature` file describing the expected behavior
 2. Run `bun test bdd/` — it fails (no implementation yet)
 3. Implement the backend code (see **Backend Implementation Guide** below)
 4. Run `bun test bdd/` — it passes
-5. Move to next feature
+5. Show the user: "recruit API is working — here's the generated copy and poster"
+6. Move to next feature
 
-### Step 3: Build Frontend
+### Step 3: Frontend Plan → Confirm → Build
 
-Once backend tests pass, build the UI:
-1. Create page layout and navigation matching the chosen style
+**Before writing any frontend code, present a plan to the user:**
+
+Example plan output:
+```
+## Frontend Plan
+
+### Pages
+1. **Home** — Landing page with product intro and navigation
+2. **Recruit** — Form to input job details, shows generated copy + poster with real-time progress
+3. **Data Import** — Paste/upload raw worker data, see structured results
+4. **Search & Match** — Chat-like interface to find and match workers
+
+### Style: [chosen style]
+- Color palette: ...
+- Effect library: [Aceternity UI / Magic UI / ...]
+- Key effects: spotlight hero on home, shimmer button on forms, 3D cards for results
+
+### Layout
+- Sidebar navigation / Top navigation
+- Responsive design
+
+Want me to adjust anything? Add or remove pages? Change the layout?
+```
+
+**Wait for user confirmation before coding.** This is where the team shapes the product — let them make decisions on pages, layout, naming.
+
+Then build:
+1. Create page layout and navigation
 2. Wire up backend APIs to UI components
 3. Add real-time progress display using `onProgress` callbacks
 4. Add animations from the chosen effect library (see **Frontend Tech Stack** below)
