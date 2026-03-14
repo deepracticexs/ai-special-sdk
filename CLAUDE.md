@@ -181,6 +181,94 @@ openai          — all model calls (OpenAI-compatible proxy)
 
 ---
 
+## BDD Testing with @deepracticex/bdd
+
+Use BDD to verify each backend feature works before wiring to UI. Cucumber-compatible, runs natively on Bun.
+
+### Setup
+
+```typescript
+// bdd/run.test.ts
+import { configure } from "@deepracticex/bdd";
+
+await configure({
+  features: ["bdd/features/**/*.feature"],
+  steps: ["bdd/steps/**/*.ts", "bdd/support/**/*.ts"],
+  timeout: 120_000,
+});
+```
+
+Run: `bun test bdd/`
+
+### Directory Convention
+
+```
+bdd/
+├── features/       # .feature files (specs)
+├── steps/          # *.steps.ts (step implementations)
+├── support/        # World, hooks, helpers
+└── run.test.ts     # Entry point
+```
+
+### Writing Features
+
+```gherkin
+Feature: Recruitment content generation
+  Scenario: Generate recruitment copy and poster
+    Given AI services are ready
+    When I request recruitment content:
+      | position | 月嫂           |
+      | region   | 上海           |
+      | salary   | 8000-15000元/月 |
+      | contact  | 13800138000    |
+      | platform | 小红书          |
+    Then should return copy and poster image
+```
+
+Chinese Gherkin supported — add `# language: zh-CN` as first line.
+
+### Writing Steps
+
+```typescript
+import { Given, When, Then, DataTable } from "@deepracticex/bdd";
+import { expect } from "bun:test";
+
+Given("AI services are ready", function () {
+  autoRegister();
+});
+
+When("I request recruitment content:", async function (dataTable: DataTable) {
+  const data = dataTable.rowsHash();
+  this.result = await recruit({
+    position: data.position,
+    region: data.region,
+    salary: data.salary,
+    contact: data.contact,
+    platform: data.platform,
+  }, (event) => {
+    console.log(`[${event.step}] ${event.status}: ${event.message}`);
+  });
+});
+
+Then("should return copy and poster image", function () {
+  expect(this.result.copy).not.toBeNull();
+  expect(this.result.imageUrl).toMatch(/^https?:\/\//);
+});
+```
+
+Key patterns:
+- `DataTable.rowsHash()` for key-value tables
+- `this` for sharing state between steps (each scenario gets fresh state)
+- `{string}`, `{int}`, `{float}`, `{word}` for parameter extraction
+- DocString (triple quotes) for multi-line text input
+- Tags `@pending` to skip unfinished scenarios
+
+### Workflow
+
+Write feature file first → run test (it fails) → implement the code → test passes. This ensures every API works before touching the UI.
+
+---
+
 ## Frontend Tech Stack
 
 ### Core
