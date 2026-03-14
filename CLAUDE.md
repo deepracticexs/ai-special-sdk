@@ -50,13 +50,15 @@ English: "I'm a full-stack engineer with experience in AI applications. What pro
 | 🎯 Clean & Minimal | White space, minimal UI, tool-like | Efficiency tools |
 | 🎨 Trendy & Social | Gradients, card flow, social media vibe | Marketing/recruitment |
 
-**Then immediately start building.**
+**Then immediately start building following the steps below.**
 
 ---
 
-## Step 1: Setup
+## Execution Steps (follow in order)
 
-Ask the user for their **API Key** (just one key), then create `.env`:
+### Step 1: Project Init + API Key
+
+Ask the user for their **API Key** (just one key), then:
 
 ```
 SWAN_IMAGE_BASE_URL=https://hk-api.gptbest.vip/v1
@@ -68,6 +70,37 @@ SWAN_TEXT_MODEL=claude-sonnet-4-6
 ```
 
 All values use the same proxy and the same key. Only ask for **one key**.
+
+1. Init Next.js project: `npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir`
+2. Install backend deps: `bun add openai @lancedb/lancedb`
+3. Install frontend deps: `bun add framer-motion lucide-react`
+4. Init shadcn/ui: `npx shadcn@latest init`
+5. Install BDD (dev): `bun add -d @deepracticex/bdd`
+6. Create `.env` with the key
+7. Set up `bdd/run.test.ts` entry point
+
+### Step 2: Build Backend (BDD-driven)
+
+For each chosen capability, follow this cycle:
+1. Write a `.feature` file describing the expected behavior
+2. Run `bun test bdd/` — it fails (no implementation yet)
+3. Implement the backend code (see **Backend Implementation Guide** below)
+4. Run `bun test bdd/` — it passes
+5. Move to next feature
+
+### Step 3: Build Frontend
+
+Once backend tests pass, build the UI:
+1. Create page layout and navigation matching the chosen style
+2. Wire up backend APIs to UI components
+3. Add real-time progress display using `onProgress` callbacks
+4. Add animations from the chosen effect library (see **Frontend Tech Stack** below)
+
+**IMPORTANT:** Always use `next build && next start` (preview mode) to view the app. NEVER use `next dev` — dev mode does real-time compilation which is slow and hurts the demo experience. After every code change: build first, then start.
+
+### Step 4: Polish & Enhance
+
+Add features as the team requests — history panel, comparison views, stats, extra animations, branding.
 
 ---
 
