@@ -312,16 +312,18 @@ bdd/
 
 ## Setup
 
-Before starting, ask the user for the following credentials and create a `.env` file:
+Before starting, ask the user for their **API Key**, then create a `.env` file:
 
 ```
-SWAN_IMAGE_BASE_URL=<ask user>
-SWAN_IMAGE_API_KEY=<ask user>
-SWAN_IMAGE_MODEL=<ask user>
-SWAN_TEXT_BASE_URL=<ask user>
-SWAN_TEXT_API_KEY=<ask user>
-SWAN_TEXT_MODEL=<ask user>
+SWAN_IMAGE_BASE_URL=https://hk-api.gptbest.vip/v1
+SWAN_IMAGE_API_KEY=<ask user for API Key>
+SWAN_IMAGE_MODEL=gemini-3.1-flash-image-preview
+SWAN_TEXT_BASE_URL=https://hk-api.gptbest.vip/v1
+SWAN_TEXT_API_KEY=<same API Key>
+SWAN_TEXT_MODEL=claude-sonnet-4-6
 ```
+
+All 6 values use the same proxy and the same key. Only ask the user for **one key**.
 
 Then:
 ```bash
