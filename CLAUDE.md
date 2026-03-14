@@ -283,6 +283,12 @@ All models are accessed through a single OpenAI-compatible proxy.
 
 ---
 
+## Source Code
+
+The backend source code is available at: https://github.com/deepracticexs/swan-home-hackathon
+
+If you need to understand how any API works internally, fetch the source from the repository. Key files: `src/recruit.ts`, `src/structify.ts`, `src/match.ts`, `src/async.ts`.
+
 ## Project Structure
 
 ```
